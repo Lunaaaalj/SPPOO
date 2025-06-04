@@ -13,7 +13,7 @@ Tecnologico de Monterrey
 #include <string>
 
 class BiblioFiles {
-    private:
+    protected:
     std::string idfile,title,author,filetype,fragment;
     int publicationyear;
     bool availability;
@@ -62,12 +62,11 @@ class BiblioFiles {
         std::cout << "Availability: ";
         isavailable();
         std::cout << "File type: " << getfiletype() << std::endl;
-        std::cout << "=======================================" << std::endl;
     }
 };
 
 class User {
-    private:
+    protected:
     std::vector<BiblioFiles*> history;
     std::string id,name;
     std::vector<BiblioFiles*> borrowedfiles;
