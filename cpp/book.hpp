@@ -1,3 +1,13 @@
+/*
+Header file for Book class
+Derived class from BiblioFiles
+
+Angel Luna
+Tecnologico de Monterrey
+
+*/
+
+
 #include <iostream>
 #include <vector>
 #include <string>

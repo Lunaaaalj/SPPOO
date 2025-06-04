@@ -1,5 +1,5 @@
 /*
-Header file Bibliofile. Abstract class
+Header file magazine. derived class from BiblioFiles
 
 Angel Luna
 
@@ -9,48 +9,36 @@ Tecnologico de Monterrey
 
 
 #include <iostream>
+#include <vector>
+#include <string>
+#include "bibliofiles.hpp"
 
-class BiblioFiles {
+class Magazine : public BiblioFiles {
     private:
-    std::string idfile,title,author,filetype,fragment;
-    int publicationyear;
-    bool availability;
+    int issueNumber;
+    std::string periodicity, maintheme, editorial;
+    std::vector<std::string> articles;
     public:
-
-    void borrow() {
-        availability=false; //pendiente: integrar con la clase usuario
-        std::cout << "The file has been borrowed." << std::endl;
-    }
-    void returnfile() {
-        availability=true;
-        std::cout << "The file has been retrieved." << std::endl;
-    }
-    void isavailable() const {
-        switch(availability) {
-            case true:
-            std::cout << "AVAILABLE" << std::endl;
-            break;
-            case false:
-            std::cout << "UNAVAILABLE" << std::endl;
-            break; 
-        }
-    }
-    std::string getfiletype() const {
-        return filetype;
-    }
-     void showfragment() const {
+    Magazine(std::string id, std::string t, std::string a, int year, std::string type, std::string frag, int issueNum, std::string period, std::string theme, std::string edit, const std::vector<std::string>& arts)
+        : BiblioFiles(id, t, a, year, type, frag), issueNumber(issueNum), periodicity(period), maintheme(theme), editorial(edit), articles(arts) {}
+    void showfragment() const {
         std::cout << fragment << std::endl;
-     };
-    virtual void showinfo() const {
+    }
+    void showinfo() const override {
+        BiblioFiles::showinfo();
+        std::cout << "Issue Number: " << issueNumber << std::endl;
+        std::cout << "Periodicity: " << periodicity << std::endl;
+        std::cout << "Main Theme: " << maintheme << std::endl;
+        std::cout << "Editorial: " << editorial << std::endl;
+        std::cout << "=======================================" << std::endl;
+    }
+    void showgeneralcontent() const {
         std::cout << "======================================" << std::endl;
-        std::cout << "BOOK TITLE: " << title << std::endl;
-        std::cout << "--------------------------------------" << std::endl;
-        std::cout << "--------------------------------------" << std::endl;
-        std::cout << "Library ID: " << idfile << std::endl;
-        std::cout << "Author: " << author << std::endl;
-        std::cout << "Year of publication: " << publicationyear << std::endl;
-        std::cout << "Availability: ";
-        isavailable();
-        std::cout << "File type: " << getfiletype() << std::endl;
+        std::cout << "General Content of the Magazine:" << std::endl;
+        for (const auto& article : articles) {
+            std::cout << "- " << article << std::endl;
+        }
+        std::cout << "======================================" << std::endl;
     }
 };
+
