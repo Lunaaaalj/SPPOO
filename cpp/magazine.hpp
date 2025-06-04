@@ -1,13 +1,16 @@
 /*
 Header file magazine. derived class from BiblioFiles
 
+This class represents a magazine in the library system, including attributes such as issue number, periodicity, main theme, editorial, and articles.
+It also includes methods to display magazine-specific information and a fragment of the magazine.
+
 Angel Luna
 
 Tecnologico de Monterrey
 
 */
 
-
+#pragma once
 #include <iostream>
 #include <vector>
 #include <string>

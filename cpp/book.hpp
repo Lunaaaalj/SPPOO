@@ -1,13 +1,15 @@
 /*
 Header file for Book class
 Derived class from BiblioFiles
+This class represents a book in the library system, including attributes such as ISBN, genre, publisher, and pages.
+ It also includes methods to display book-specific information and a fragment of the book.
 
 Angel Luna
 Tecnologico de Monterrey
 
 */
 
-
+#pragma once
 #include <iostream>
 #include <vector>
 #include <string>
