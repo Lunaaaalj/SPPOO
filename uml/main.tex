@@ -1,0 +1,99 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning}
+\tikzumlset{fill class=white}
+
+
+\title{Modelado de servicio de streaming}
+\author{Angel Luna\thanks{Instituto Tecnológico y de Estudios Superiores de Monterrey}}
+
+\begin{document}
+
+\maketitle
+
+\begin{tikzpicture}
+    \umlclass{BiblioFiles}
+    {
+        - idfile : string\\
+        - title : string\\
+        - author : string\\
+        - publicationyear : int\\
+        - avaliability : bool\\
+        - filetype : string\\
+        - Fragment : string\\
+    }
+    {
+        + \emph{showinfo() : virtual void}\\
+        + borrow() : void\\
+        + return() : void\\
+        + isavailable() : void\\
+        + \emph{showfragment() : virtual void}\\
+        + getfiletype() : string\\
+    }
+
+    \umlclass[right=1cm of BiblioFiles]{Book}
+    {
+        - ISBN : string\\
+        - pagenumber : int\\
+        - genre : string\\
+    }
+    {
+        + Book(\dots)\\
+        + showfragment() : void overide\\
+        + showinfo() : void override\\
+    }
+
+    \umlclass[below=1cm of BiblioFiles]{Magazine}
+    {
+        - editionN : int\\
+        - periodicity : string\\
+        - maintheme : string\\
+        - general content : vector$<$string$>$\\
+    }
+    {
+        + Magazine(\dots)\\
+        + seegeneralcontent() : void\\
+        + showfragment() : void override\\
+        + showinfo() : void override\\
+    }
+
+    \umlclass[below=1cm of Book]{Thesis}
+    {
+        - academiclevel : string\\
+        - institution : string\\
+        - advisor : string\\
+        - abstract : string\\
+        - biblio : vector$<$string$>$\\
+    }
+    {
+        + Thesis(\dots)\\
+        + seeabstract() : void\\
+        + consultbiblio() : void\\
+        + showfragment() : void override\\
+        + showinfo() : void override\\
+    }
+
+    \umlclass[below=1cm of Thesis]{User }
+    {
+        - ID : string\\
+        - name : string\\
+        - borrowedfiles : vector$<$BiblioFiles*$>$\\
+    }
+    {
+        + borrowfile(file : BiblioFiles*) : void\\
+        + returnfile(file : BiblioFiles*) : void\\
+        + showhistory : void\\
+    }
+
+
+    \umlinherit{Thesis}{BiblioFiles}
+    \umlinherit{Book}{BiblioFiles}
+    \umlinherit{Magazine}{BiblioFiles}
+
+
+
+\end{tikzpicture}
+
+
+\end{document}
