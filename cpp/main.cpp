@@ -42,7 +42,7 @@ int main() {
         while (std::getline(file, line)) {
             std::vector<std::string> fields = parseCSVLine(line);
             
-            if (fields.size() >= 10) {
+            if (fields.size() == 10) {
                 std::string id = fields[0];
                 std::string title = fields[1];
                 std::string author = fields[2];
@@ -56,6 +56,29 @@ int main() {
                 
                 Book* book = new Book(id, title, author, publicationyear, filetype, fragment, isbn, genre, publisher, pages);
                 library.push_back(book);
+            }
+        }
+        std::ifstream file2("thesis.csv");
+        if (file2.is_open()) {
+            std::getline(file2, line); // Skip header line
+            while (std::getline(file2, line)) {
+                std::vector<std::string> fields= parseCSVLine(line);
+                if (fields.size() == 11) {
+                    std::string id = fields[0];
+                    std::string title = fields[1];
+                    std::string author = fields[2];
+                    int publicationyear = std::stoi(fields[3]);
+                    std::string filetype = fields[4];
+                    std::string fragment = fields[5];
+                    std::string degree = fields[6];
+                    std::string institution = fields[7];
+                    std::string advisor = fields[8];
+                    std::string biblio = fields[9];  // Changed to string
+                    std::string abstract = fields[10]; // Added abstract field
+                    
+                    Thesis* thesis = new Thesis(id, title, author, publicationyear, filetype, fragment, degree, institution, advisor, biblio, abstract);
+                    library.push_back(thesis);
+                }
             }
         }
     }
