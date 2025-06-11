@@ -67,6 +67,9 @@ class BiblioFiles {
     std::string getfiletype() const {
         return filetype;
     }
+    std::string getidfile() const {
+        return idfile;
+    }
      void showfragment() const {
         std::cout << "======================================" << std::endl;
         std::cout << fragment << std::endl;
@@ -88,40 +91,79 @@ class BiblioFiles {
 
 class User {
     protected:
-    std::vector<BiblioFiles*> history;
-    std::string id,name;
-    std::vector<BiblioFiles*> borrowedfiles;
+    std::string history;        // String to store history of borrowed files
+    std::string name, password; // User credentials
+    std::string borrowedfiles;  // String to store currently borrowed files
     public:
-    User(std::string userId, std::string userName) : id(userId), name(userName) {}
+    User(std::string userName, std::string userPassword, std::string borrowedFiles, std::string userHistory) 
+        : name(userName), password(userPassword) {}
+    
     void borrowfile(BiblioFiles* file) {
-        borrowedfiles.push_back(file);
-        history.push_back(file);
+        // Add to borrowed files list
+        if (!borrowedfiles.empty()) {
+            borrowedfiles += ";";  // Use semicolon as separator
+        }
+        borrowedfiles += file->getidfile();
+        
+        // Add to history
+        if (!history.empty()) {
+            history += ";";
+        }
+        history += file->getidfile();
+        
         file->borrow();
     }
-    void returnfile(BiblioFiles* file) { 
-        for (auto it = borrowedfiles.begin(); it != borrowedfiles.end(); ++it) {
-            if (*it == file) {
-                borrowedfiles.erase(it);
-                file->returnfile();
-                break;
+    
+    void returnfile(BiblioFiles* file) {
+        std::string fileId = file->getidfile();
+        size_t pos = borrowedfiles.find(fileId);
+        
+        if (pos != std::string::npos) {
+            // Remove from borrowed files
+            if (pos == 0) {
+                // File is at the beginning
+                if (borrowedfiles.length() == fileId.length()) {
+                    borrowedfiles.clear();  // Only file in the list
+                } else {
+                    borrowedfiles = borrowedfiles.substr(fileId.length() + 1);  // Remove file and semicolon
+                }
+            } else {
+                // File is in the middle or end
+                borrowedfiles.erase(pos - 1, fileId.length() + 1);  // Remove semicolon and file
             }
-            else {
-                std::cout << "The file is not borrowed by this user." << std::endl;
-            }   
+            
+            file->returnfile();
+        } else {
+            std::cout << "The file is not borrowed by this user." << std::endl;
         }
     }
+    
     void showborrowedfiles() const {
+        std::cout << "=======================================" << std::endl;
         std::cout << "Borrowed files by " << name << ":" << std::endl;
-        for (const auto& file : borrowedfiles) {
-            file->showinfo();
+        if (borrowedfiles.empty()) {
+            std::cout << "No files currently borrowed." << std::endl;
+        } else {
+            std::cout << borrowedfiles << std::endl;
         }
+        std::cout << "=======================================" << std::endl;
     }
+    
     void showhistory() const {
         std::cout << "=======================================" << std::endl;
         std::cout << "Borrowing history for " << name << ":" << std::endl;
-        for (const auto& file : history) {
-            file->showinfo();
+        if (history.empty()) {
+            std::cout << "No borrowing history." << std::endl;
+        } else {
+            std::cout << history << std::endl;
         }
         std::cout << "=======================================" << std::endl;
     }
+    
+    // Getter methods
+    std::string getName() const { return name; }
+    bool verifyPassword(const std::string& pass) const { return password == pass; }
+    
+    // Password management
+    void changePassword(const std::string& newPassword) { password = newPassword; }
 };

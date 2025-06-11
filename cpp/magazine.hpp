@@ -12,7 +12,6 @@ Tecnologico de Monterrey
 
 #pragma once
 #include <iostream>
-#include <vector>
 #include <string>
 #include "bibliofiles.hpp"
 
@@ -20,9 +19,9 @@ class Magazine : public BiblioFiles {
     private:
     int issueNumber;
     std::string periodicity, maintheme, editorial;
-    std::vector<std::string> articles;
+    std::string articles;  // Changed from vector to string
     public:
-    Magazine(std::string id, std::string t, std::string a, int year, std::string type, std::string frag, int issueNum, std::string period, std::string theme, std::string edit, const std::vector<std::string>& arts)
+    Magazine(std::string id, std::string t, std::string a, int year, std::string type, std::string frag, int issueNum, std::string period, std::string theme, std::string edit, std::string arts)
         : BiblioFiles(id, t, a, year, type, frag), issueNumber(issueNum), periodicity(period), maintheme(theme), editorial(edit), articles(arts) {}
     void showfragment() const {
         std::cout << fragment << std::endl;
@@ -38,9 +37,7 @@ class Magazine : public BiblioFiles {
     void showgeneralcontent() const {
         std::cout << "======================================" << std::endl;
         std::cout << "General Content of the Magazine:" << std::endl;
-        for (const auto& article : articles) {
-            std::cout << "- " << article << std::endl;
-        }
+        std::cout << articles << std::endl;  // Simply print the string
         std::cout << "======================================" << std::endl;
     }
 };
