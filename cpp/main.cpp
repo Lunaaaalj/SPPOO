@@ -168,6 +168,7 @@ int main() {
         std::cerr << "FATAL ERROR: Could not open user.csv file." << std::endl;
         return 1; // Exit if user data cannot be loaded
     }
+    // I love spagetti code, don't you?
     userFile.close();
     std::cout << "User data loaded successfully!" << std::endl;
 
@@ -181,6 +182,7 @@ int main() {
             exitprogram = true;
             break;
         }
+        //This works, for now.
         if (response == "L") {
             showloginmenu();
             std::string username, password;
@@ -191,6 +193,7 @@ int main() {
                     std::cout << "Enter password: ";
                     std::getline(std::cin, password);
                     if (users[i]->verifyPassword(password)) {
+                        User* currentUser = users[i]; // Store the logged-in user
                         std::cout << "Login successful!" << std::endl;
                         std::cout << "Loading library data..." << std::endl;
 
@@ -285,18 +288,264 @@ int main() {
                         
                         std::cout << "All library data loaded successfully!" << std::endl;
                         
-                        // Main application loop after successful login
+                        // main application loop after successful login
                         std::string mainResponse;
+                        std::string secondResp;
+                        std::string thirdResp;
+                        std::string fourthResp;
                         bool loggedIn = true;
+
                         while (loggedIn) {
                             showmenu_1();
                             std::getline(std::cin, mainResponse);
                             
                             if (mainResponse == "E") {
                                 loggedIn = false;
-                                exitprogram = true;
                             } else if (mainResponse == "V") {
                                 // Handle view menu
+                                while (true) {
+                                    showmenu_V();
+                                    std::getline(std::cin, secondResp);
+                                    if (secondResp == "E") {
+                                        break;
+                                    }
+                                    else if (secondResp == "B") {
+                                        while (true) {
+                                        std::cout << "======================================" << std::endl;
+                                        for (size_t j = 0; j < library.size(); j++) {
+                                            if (library[j]->getfiletype() == "book") {
+                                                std::cout << "---------------------------------------" << std::endl;
+                                                std::cout << library[j]->getidfile() << " - " << library[j]->gettitle() << " by " << library[j]->getauthor() << std::endl;
+                                                std::cout << "---------------------------------------" << std::endl;
+                                            }
+                                        }
+                                        std::cout << "======================================" << std::endl;
+                                        std::cout << "Enter the ID of the book to view details or 'E' to exit: ";
+                                        std::getline(std::cin, thirdResp);
+                                        if (thirdResp == "E") {
+                                            break;
+                                        }
+                                        else {
+                                            bool found = false;
+                                            // In the book details section
+                                            for (size_t k = 0; k < library.size(); k++) {
+                                                if (library[k]->getidfile() == thirdResp && library[k]->getfiletype() == "book") {
+                                                    std::string fileResponse;
+                                                    while (true) {
+                                                        found = true;
+                                                        library[k]->showinfo();
+                                                        showfilemenu();
+                                                        std::getline(std::cin, fileResponse);
+                                                        if (fileResponse == "B") {
+                                                            currentUser->borrowfile(library[k]);
+                                                            std::cout << "File borrowed successfully!" << std::endl;
+                                                            break; // Exit after borrowing
+                                                        } else if (fileResponse == "R") {
+                                                            currentUser->returnfile(library[k]);
+                                                            std::cout << "File returned successfully!" << std::endl;
+                                                            break; // Exit after returning
+                                                        } else if (fileResponse == "S") {
+                                                            library[k]->showinfo();
+                                                            // Don't break - allow user to see info and choose another action
+                                                        } else if (fileResponse == "F") {
+                                                            library[k]->showfragment();
+                                                            // Don't break - allow user to see fragment and choose another action
+                                                        } else if (fileResponse == "G") {
+                                                            if (library[k]->getfiletype() == "magazine") {
+                                                                static_cast<Magazine*>(library[k])->showgeneralcontent();
+                                                            } else {
+                                                                std::cout << "This file does not have general content." << std::endl;
+                                                            }
+                                                            // Don't break - allow user to choose another action
+                                                        } else if (fileResponse == "E") {
+                                                            break;
+                                                        } else {
+                                                            std::cout << "Invalid option! Please try again." << std::endl;
+                                                            // Don't break - show menu again for invalid input
+                                                        }
+                                                    }
+                                                    break; // Exit the library search loop after handling the file
+                                                }
+                                            }
+                                            if (!found) {
+                                                std::cout << "File not found! Please try again." << std::endl;
+                                            }
+                                        
+                                        }
+                                        }
+                                    } else if (secondResp == "T") {
+                                        // Handle thesis viewing (similar pattern)
+                                        while (true) {
+                                        std::cout << "======================================" << std::endl;
+                                        for (size_t j = 0; j < library.size(); j++) {
+                                            if (library[j]->getfiletype() == "thesis") {
+                                                std::cout << "---------------------------------------" << std::endl;
+                                                std::cout << library[j]->getidfile() << " - " << library[j]->gettitle() << " by " << library[j]->getauthor() << std::endl;
+                                                std::cout << "---------------------------------------" << std::endl;
+                                            }
+                                        }
+                                        std::cout << "======================================" << std::endl;
+                                        std::cout << "Enter the ID of the thesis to view details or 'E' to exit: ";
+                                        std::getline(std::cin, thirdResp);
+                                        if (thirdResp == "E") {
+                                            break;
+                                        }
+                                        else {
+                                            bool found = false;
+                                            for (size_t k = 0; k < library.size(); k++) {
+                                                if (library[k]->getidfile() == thirdResp && library[k]->getfiletype() == "thesis") {
+                                                    found = true;
+                                                    std::string fileResponse;
+                                                    while (true) {
+                                                        library[k]->showinfo();
+                                                        static_cast<Thesis*>(library[k])->showbibliography();
+                                                        static_cast<Thesis*>(library[k])->seeabstract();
+                                                        showfilemenu();
+                                                        std::getline(std::cin, fileResponse);
+                                                        if (fileResponse == "B") {
+                                                            currentUser->borrowfile(library[k]);
+                                                        } else if (fileResponse == "R") {
+                                                            currentUser->returnfile(library[k]);
+                                                            std::cout << "File returned successfully!" << std::endl;
+                                                        } else if (fileResponse == "S") {
+                                                            library[k]->showinfo();
+                                                        } else if (fileResponse == "F") {
+                                                            library[k]->showfragment();
+                                                        } else if (fileResponse == "G") {
+                                                            std::cout << "This file does not have general content." << std::endl;
+                                                        } else if (fileResponse == "E") {
+                                                            break;
+                                                        } else {
+                                                            std::cout << "Invalid option! Please try again." << std::endl;
+                                                        }
+                                                    }
+                                                    break; // Exit the thesis search loop after handling the file
+                                                }
+                                            }
+                                            if (!found) {
+                                                std::cout << "File not found! Please try again." << std::endl;
+                                            }
+                                        }
+                                        }
+                                        break;
+                                    }
+                                    else if (secondResp == "M") {
+                                        // Handle magazine viewing (similar pattern)
+                                        while (true) {
+                                        std::cout << "======================================" << std::endl;
+                                        for (size_t j = 0; j < library.size(); j++) {
+                                            if (library[j]->getfiletype() == "magazine") {
+                                                std::cout << "---------------------------------------" << std::endl;
+                                                std::cout << library[j]->getidfile() << " - " << library[j]->gettitle() << " by " << library[j]->getauthor() << std::endl;
+                                                std::cout << "---------------------------------------" << std::endl;
+                                            }
+                                        }
+                                        std::cout << "======================================" << std::endl;
+                                        std::cout << "Enter the ID of the magazine to view details or 'E' to exit: ";
+                                        std::getline(std::cin, thirdResp);
+                                        if (thirdResp == "E") {
+                                            break;
+                                        }
+                                        else {
+                                            bool found = false;
+                                            for (size_t k = 0; k < library.size(); k++) {
+                                                if (library[k]->getidfile() == thirdResp && library[k]->getfiletype() == "magazine") {
+                                                    found = true;
+                                                    std::string fileResponse;
+                                                    while (true) {
+                                                        library[k]->showinfo();
+                                                        static_cast<Magazine*>(library[k])->showgeneralcontent();
+                                                        showfilemenu();
+                                                        std::getline(std::cin, fileResponse);
+                                                        if (fileResponse == "B") {
+                                                            currentUser->borrowfile(library[k]);
+                                                        } else if (fileResponse == "R") {
+                                                            currentUser->returnfile(library[k]);
+                                                            std::cout << "File returned successfully!" << std::endl;
+                                                        } else if (fileResponse == "S") {
+                                                            library[k]->showinfo();
+                                                        } else if (fileResponse == "F") {
+                                                            library[k]->showfragment();
+                                                        } else if (fileResponse == "G") {
+                                                            static_cast<Magazine*>(library[k])->showgeneralcontent();
+                                                        } else if (fileResponse == "E") {
+                                                            break;
+                                                        } else {
+                                                            std::cout << "Invalid option! Please try again." << std::endl;
+                                                        }
+                                                    }
+                                                    break; // Exit the magazine search loop after handling the file
+                                                }
+                                            }
+                                            if (!found) {
+                                                std::cout << "File not found! Please try again." << std::endl;
+                                            }
+                                        }
+                                        }
+                                        break;
+                                    }
+                                    else if (secondResp == "A") {
+                                        std::cout << "======================================" << std::endl;
+                                        std::cout << "All files in the library:" << std::endl;
+                                        for (size_t j = 0; j < library.size(); j++) {
+                                            std::cout << "---------------------------------------" << std::endl;
+                                            std::cout << library[j]->getidfile() << " - " << library[j]->gettitle() << " by " << library[j]->getauthor() << std::endl;
+                                            std::cout << "---------------------------------------" << std::endl;
+                                        }
+                                        std::cout << "======================================" << std::endl;
+                                        std::cout << "Enter the ID of the file to view details or 'E' to exit: ";
+                                        std::getline(std::cin, thirdResp);
+                                        if (thirdResp == "E") {
+                                            break;
+                                        } else {
+                                            for (size_t k = 0; k < library.size(); k++) {
+                                                if (library[k]->getidfile() == thirdResp) {
+                                                    std::string fileResponse;
+                                                    while (true) {
+                                                        library[k]->showinfo();
+                                                        showfilemenu();
+                                                        std::getline(std::cin, fileResponse);
+                                                        if (fileResponse == "B") {
+                                                            currentUser->borrowfile(library[k]);
+                                                        } else if (fileResponse == "R") {
+                                                            currentUser->returnfile(library[k]);
+                                                            std::cout << "File returned successfully!" << std::endl;
+                                                        } else if (fileResponse == "S") {
+                                                            library[k]->showinfo();
+                                                        } else if (fileResponse == "F") {
+                                                            library[k]->showfragment();
+                                                        } else if (fileResponse == "G") {
+                                                            if (library[k]->getfiletype() == "magazine") {
+                                                                static_cast<Magazine*>(library[k])->showgeneralcontent();
+                                                            } else {
+                                                                std::cout << "This file does not have general content." << std::endl;
+                                                            }
+                                                        } else if (fileResponse == "E") {
+                                                            break;
+                                                        } else {
+                                                            std::cout << "Invalid option! Please try again." << std::endl;
+                                                        }
+                                                    }
+                                                    break; // Exit the all files viewing loop after handling the file
+                                                }
+                                            }
+                                        }
+                                        if (thirdResp.empty()) {
+                                            std::cout << "No file selected. Returning to the main menu." << std::endl;
+                                        }
+                                        // In the all files viewing section
+                                        bool found = false; 
+                                        // Handle all files viewing
+                                        break;
+                                    }
+                                    else if (secondResp == "R") {
+                                        std::cout << "Returning to the main menu..." << std::endl;
+                                        break; // Return to main menu
+                                    }
+                                    else {
+                                        std::cout << "Invalid option! Please try again." << std::endl;
+                                    }
+                                }
                             } else if (mainResponse == "L") {
                                 // Handle search menu
                             } else if (mainResponse == "B") {
@@ -317,20 +566,22 @@ int main() {
                     }
                     break; // Exit the user search loop (user found but wrong password)
                 } 
+                std::cout << "User not found! Please try again." << std::endl;
             }
-                    std::cout << "User not found! Please try again." << std::endl;
+
         }
+        // I have officialy lost my sanity, so I will now implement the registration menu.
         if (response == "R") {
             showregistermenu();
             std::string username, password;
             std::cout << "Enter new username: ";
             std::getline(std::cin, username);
-            for (size_t i = 0; i < users.size(); i++) {
-                if (users[i]->getName() == username) {
+            for (size_t userIdx = 0; userIdx < users.size(); userIdx++) { // Changed from 'i' to 'userIdx'
+                if (users[userIdx]->getName() == username) {
                     std::cout << "Username already exists! Please choose a different username." << std::endl;
                     username.clear();
-                    response = "R"; // Reset response to allow re-entry
-                    break; // Exit the loop if username already exists
+                    response = "R";
+                    break;
                 }
             }
             if (!username.empty()) {

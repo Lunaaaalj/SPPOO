@@ -1,9 +1,9 @@
 Username,password,history,borrowed_files
 testuser,testpassword,"",""
-newtest,newpwd,,
+new,new,B008;B008,B008;B008
 test,test,,
-test2,test2,,
+test2,test2,B004,B004;B004
 test3,test3,,
 hello,hello,,
-E,E,,
-new,new,,
+E,E,T006,T006
+new,new,B008;B008,B008;B008

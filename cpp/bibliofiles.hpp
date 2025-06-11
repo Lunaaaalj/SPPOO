@@ -31,6 +31,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <stdexcept> // For std::runtime_error
 
 class BiblioFiles {
     protected:
@@ -51,8 +54,14 @@ class BiblioFiles {
         std::cout << "BiblioFiles object with ID " << idfile << " is being destroyed." << std::endl;
     } // Virtual destructor for proper cleanup of derived classes
     void borrow() {
+        if (!availability) {
+            std::cout << "The file is currently unavailable." << std::endl;
+            return;
+        }
+        else {
         availability=false;
         std::cout << "The file has been borrowed." << std::endl;
+        }
     }
     void returnfile() {
         availability=true;
@@ -69,6 +78,12 @@ class BiblioFiles {
     }
     std::string getidfile() const {
         return idfile;
+    }
+    std::string gettitle() const {
+        return title;
+    }
+    std::string getauthor() const {
+        return author;
     }
      void showfragment() const {
         std::cout << "======================================" << std::endl;
@@ -110,6 +125,29 @@ class User {
             history += ";";
         }
         history += file->getidfile();
+        
+        std::ifstream userFileIn("user.csv");
+        if (userFileIn.is_open()) {
+            std::string line;
+            std::vector<std::string> lines;
+            while (std::getline(userFileIn, line)) {
+                if (line.find(name) == 0) { // Check if the line starts with the username
+                    lines.push_back(name + "," + password + "," + borrowedfiles + "," + history);
+                } else {
+                    lines.push_back(line);
+                }
+            }
+            userFileIn.close();
+            
+            // Rewrite the file with updated data
+            std::ofstream userFileOut("user.csv", std::ios::out | std::ios::trunc);
+            for (const auto& l : lines) {
+                userFileOut << l << std::endl;
+            }
+            userFileOut.close();
+        } else {
+            std::cerr << "FATAL ERROR: Could not open user.csv file for reading." << std::endl;
+        }
         
         file->borrow();
     }
