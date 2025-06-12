@@ -195,12 +195,21 @@ class User {
         } else {
             std::cout << history << std::endl;
         }
+        std::cout << "----------------------------------------" << std::endl;
+        std::cout << "NOTE: History shown from last session." << std::endl;
         std::cout << "=======================================" << std::endl;
     }
     
     // Getter methods
     std::string getName() const { return name; }
     bool verifyPassword(const std::string& pass) const { return password == pass; }
+    std::string getborrowedfiles() const { return borrowedfiles; }
+    std::string gethistory() const { return history; }
+    std::string getPassword() const { return password; }
+    std::string getUserInfo() const {
+        return name + "," + password + "," + borrowedfiles + "," + history;
+    }
+
     
     // Password management
     void changePassword(const std::string& newPassword) { password = newPassword; }

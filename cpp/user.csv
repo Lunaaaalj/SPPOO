@@ -1,9 +1,2 @@
-Username,password,history,borrowed_files
-testuser,testpassword,"",""
-new,new,B008;B008,B008;B008
-test,test,,
-test2,test2,B004,B004;B004
-test3,test3,,
-hello,hello,,
-E,E,T006,T006
-new,new,B008;B008,B008;B008
+username,password,borrowedhistory
+testuser,testpwd,B001;M009;B002,B001;M009;B002

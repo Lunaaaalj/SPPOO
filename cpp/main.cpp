@@ -8,6 +8,7 @@
 #include "book.hpp"
 #include "thesis.hpp"
 
+//this code is just straight up spaghetti code, I know. But i wanted to make it work first, and I DO NOT have the time to refactor it.
 
 std::vector<std::string> parseCSVLine(const std::string& line) {
     std::vector<std::string> result;
@@ -22,13 +23,62 @@ std::vector<std::string> parseCSVLine(const std::string& line) {
         } else if (c == ',' && !inQuotes) {
             result.push_back(field);
             field.clear();
-        } else {
+        } 
+        else {
             field += c;
         }
     }
     result.push_back(field); // Add the last field
     return result;
 }
+
+void changeusername(User* user,std::string newname) {
+    std::ifstream userFileIn("user.csv");
+    if (userFileIn.is_open()) {
+        std::string line;
+        std::vector<std::string> lines;
+        while (std::getline(userFileIn, line)) {
+            if (line.find(user->getName()) == 0) { // Check if the line starts with the username
+                lines.push_back(newname + "," + user->getPassword() + "," + user->getborrowedfiles() + "," + user->gethistory());
+            } else {
+                lines.push_back(line);
+            }
+        }
+        userFileIn.close();
+        
+        // Rewrite the file with updated data
+        std::ofstream userFileOut("user.csv", std::ios::out | std::ios::trunc);
+        for (const auto& l : lines) {
+            userFileOut << l << std::endl;
+        }
+        userFileOut.close();
+    } else {
+        std::cerr << "FATAL ERROR: Could not open user.csv file for reading." << std::endl;
+    }
+}
+void deleteuser(User* user) {
+    std::ifstream userFileIn("user.csv");
+    if (userFileIn.is_open()) {
+        std::string line;
+        std::vector<std::string> lines;
+        while (std::getline(userFileIn, line)) {
+            if (line.find(user->getName()) != 0) { // Skip the line with the username
+                lines.push_back(line);
+            }
+        }
+        userFileIn.close();
+        
+        // Rewrite the file without the deleted user
+        std::ofstream userFileOut("user.csv", std::ios::out | std::ios::trunc);
+        for (const auto& l : lines) {
+            userFileOut << l << std::endl;
+        }
+        userFileOut.close();
+    } else {
+        std::cerr << "FATAL ERROR: Could not open user.csv file for reading." << std::endl;
+    }
+}
+
 
 void showmenu_1() {
     std::cout << "Library data loaded successfully!" << std::endl;
@@ -188,8 +238,10 @@ int main() {
             std::string username, password;
             std::cout << "Enter username: ";
             std::getline(std::cin, username);
+            bool userFound = false;
             for (size_t i = 0; i < users.size(); i++) {
                 if (users[i]->getName() == username) {
+                    userFound = true;
                     std::cout << "Enter password: ";
                     std::getline(std::cin, password);
                     if (users[i]->verifyPassword(password)) {
@@ -548,14 +600,199 @@ int main() {
                                 }
                             } else if (mainResponse == "L") {
                                 // Handle search menu
+                                while (true) {
+                                    showmenu_L();
+                                    std::getline(std::cin, secondResp);
+                                    if (secondResp == "R") {
+                                        break; 
+                                    } else if (secondResp == "I") {
+                                        while (true) {
+                                            std::cout << "======================================" << std::endl;
+                                            std::cout << "Enter the ID of the file to search or 'R' to return: ";
+                                            std::getline(std::cin, thirdResp);
+                                            if (thirdResp == "R") {
+                                                break; // Return to search menu
+                                            }
+                                            bool found = false;
+                                            for (size_t k = 0; k < library.size(); k++) {
+                                                if (library[k]->getidfile() == thirdResp) {
+                                                    found = true;
+                                                    std::string fileResponse;
+                                                    while (true) {
+                                                        library[k]->showinfo();
+                                                        showfilemenu();
+                                                        std::getline(std::cin, fileResponse);
+                                                        if (fileResponse == "B") {
+                                                            currentUser->borrowfile(library[k]);
+                                                            std::cout << "File borrowed successfully!" << std::endl;
+                                                            break; // Exit after borrowing
+                                                        } else if (fileResponse == "R") {
+                                                            currentUser->returnfile(library[k]);
+                                                            std::cout << "File returned successfully!" << std::endl;
+                                                            break; // Exit after returning
+                                                        } else if (fileResponse == "S") {
+                                                            library[k]->showinfo();
+                                                        } else if (fileResponse == "F") {
+                                                            library[k]->showfragment();
+                                                        } else if (fileResponse == "G") {
+                                                            if (library[k]->getfiletype() == "magazine") {
+                                                                static_cast<Magazine*>(library[k])->showgeneralcontent();
+                                                            } else {
+                                                                std::cout << "This file does not have general content." << std::endl;
+                                                            }
+                                                        } else if (fileResponse == "E") {
+                                                            break; // Exit the file handling loop
+                                                        } else {
+                                                            std::cout << "Invalid option! Please try again." << std::endl;
+                                                        }
+                                                    }
+                                                    break; // Exit the file search loop after handling the file
+                                                }
+                                            }
+                                            if (!found) {
+                                                std::cout << "File not found! Please try again." << std::endl;
+                                            }
+                                        }
+                                       
+                                    } else if (secondResp == "A") {
+                                        while (true) {
+                                            std::cout << "======================================" << std::endl;
+                                            std::cout << "Enter the author name to search or 'R' to return: ";
+                                            std::getline(std::cin, thirdResp);
+                                            if (thirdResp == "R") {
+                                                break; // Return to search menu
+                                            }
+                                            bool found = false;
+                                            for (size_t k = 0; k < library.size(); k++) {
+                                                if (library[k]->getauthor() == thirdResp) {
+                                                    found = true;
+                                                    std::string fileResponse;
+                                                    while (true) {
+                                                        library[k]->showinfo();
+                                                        showfilemenu();
+                                                        std::getline(std::cin, fileResponse);
+                                                        if (fileResponse == "B") {
+                                                            currentUser->borrowfile(library[k]);
+                                                            std::cout << "File borrowed successfully!" << std::endl;
+                                                            break; // Exit after borrowing
+                                                        } else if (fileResponse == "R") {
+                                                            currentUser->returnfile(library[k]);
+                                                            std::cout << "File returned successfully!" << std::endl;
+                                                            break; // Exit after returning
+                                                        } else if (fileResponse == "S") {
+                                                            library[k]->showinfo();
+                                                        } else if (fileResponse == "F") {
+                                                            library[k]->showfragment();
+                                                        } else if (fileResponse == "G") {
+                                                            if (library[k]->getfiletype() == "magazine") {
+                                                                static_cast<Magazine*>(library[k])->showgeneralcontent();
+                                                            } else {
+                                                                std::cout << "This file does not have general content." << std::endl;
+                                                            }
+                                                        } else if (fileResponse == "E") {
+                                                            break; // Exit the file handling loop
+                                                        } else {
+                                                            std::cout << "Invalid option! Please try again." << std::endl;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if (!found) {
+                                                std::cout << "No files found by that author! Please try again." << std::endl;
+                                            }
+                                        }
+
+                                    } else if (secondResp == "T") {
+
+                                    }
+
+                                    
+                                }
                             } else if (mainResponse == "B") {
                                 // Handle borrow menu
+                                while (true) {
+                                    showmenu_B();
+                                    std::getline(std::cin, secondResp);
+                                    if (secondResp == "R") {
+                                        break;
+                                    } else {
+                                        bool found = false;
+                                        for (size_t j = 0; j < library.size(); j++) {
+                                            if (library[j]->getidfile() == secondResp) {
+                                                found = true;
+                                                // Only show borrow confirmation, not the full file menu
+                                                library[j]->showinfo();
+                                                std::cout << "Do you want to borrow this file? [Y/N]: ";
+                                                std::string confirm;
+                                                std::getline(std::cin, confirm);
+                                                if (confirm == "Y" || confirm == "y") {
+                                                    currentUser->borrowfile(library[j]);
+                                                    std::cout << "File borrowed successfully!" << std::endl;
+                                                } else {
+                                                    std::cout << "Borrowing cancelled." << std::endl;
+                                                }
+                                                break; // Exit the borrow menu loop after handling the file
+                                            }
+                                        }
+                                        if (!found) {
+                                            std::cout << "File not found! Please try again." << std::endl;
+                                        }
+                                    }
+                                }
                             } else if (mainResponse == "R") {
                                 // Handle return menu
+                                while (true) {
+                                    showmenu_R();
+                                    std::getline(std::cin, secondResp);
+                                    if (secondResp == "R") {
+                                        break; // Return to main menu
+                                    } else {
+                                        bool found = false;
+                                        for (size_t j = 0; j < library.size(); j++) {
+                                            if (library[j]->getidfile() == secondResp) {
+                                                found = true;
+                                                currentUser->returnfile(library[j]);
+                                                std::cout << "File returned successfully!" << std::endl;
+                                                break; // Exit after returning
+                                            }
+                                        }
+                                        if (!found) {
+                                            std::cout << "File not found! Please try again." << std::endl;
+                                        }
+                                    }
+                                }
                             } else if (mainResponse == "S") {
                                 // Handle user history
+                                currentUser->showhistory();
+                                std::cout << "Press Enter to return to the main menu." << std::endl;
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Wait for user input
                             } else if (mainResponse == "U") {
                                 // Handle user settings
+                                showmenu_U();
+                                std::string userResponse;
+                                std::getline(std::cin, userResponse);
+                                if (userResponse == "C") {
+                                    std::string newusername;
+                                    while (true) {
+                                        std::cout << "Enter new username: ";
+                                        std::getline(std::cin, newusername);
+                                        bool usernameExists = false;
+                                        for (const auto& user : users) {
+                                            if (user->getName() == newusername) {
+                                                usernameExists = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!usernameExists) {
+                                            changeusername(currentUser, newusername);
+                                            std::cout << "Username changed successfully!" << std::endl;
+                                            break; // Exit the loop after successful change
+                                        } else {
+                                            std::cout << "Username already exists! Please choose a different username." << std::endl;
+                                        }
+                                    }
+                                }
+
                             } else {
                                 std::cout << "Invalid option! Please try again." << std::endl;
                             }
@@ -565,10 +802,11 @@ int main() {
                         std::cout << "Incorrect password!" << std::endl;
                     }
                     break; // Exit the user search loop (user found but wrong password)
-                } 
+                }
+            }
+            if (!userFound) {
                 std::cout << "User not found! Please try again." << std::endl;
             }
-
         }
         // I have officialy lost my sanity, so I will now implement the registration menu.
         if (response == "R") {
