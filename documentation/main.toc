@@ -1,0 +1,35 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {section}{\numberline {2}Project Structure}{2}{section.2}%
+\contentsline {section}{\numberline {3}Main Features}{2}{section.3}%
+\contentsline {section}{\numberline {4}Class Overview}{3}{section.4}%
+\contentsline {subsection}{\numberline {4.1}BiblioFiles and Derived Classes}{3}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}User Class}{3}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Program Flow}{3}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Startup}{3}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Login and Registration}{3}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Library Data Loading}{3}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Main Application Loop}{4}{subsection.5.4}%
+\contentsline {section}{\numberline {6}File Operations}{4}{section.6}%
+\contentsline {section}{\numberline {7}Example: Borrowing a File}{4}{section.7}%
+\contentsline {section}{\numberline {8}Error Handling}{4}{section.8}%
+\contentsline {section}{\numberline {9}Data Consistency}{4}{section.9}%
+\contentsline {section}{\numberline {10}Extending the Program}{4}{section.10}%
+\contentsline {section}{\numberline {11}Menu Navigation and User Experience}{5}{section.11}%
+\contentsline {section}{\numberline {12}User Manual}{5}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Starting the Program}{5}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Main Menu Options}{5}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}After Login: User Menu}{5}{subsection.12.3}%
+\contentsline {subsection}{\numberline {12.4}Borrowing and Returning Files}{5}{subsection.12.4}%
+\contentsline {subsection}{\numberline {12.5}User Settings}{6}{subsection.12.5}%
+\contentsline {subsection}{\numberline {12.6}Input Guidelines}{6}{subsection.12.6}%
+\contentsline {subsection}{\numberline {12.7}Exiting the Program}{6}{subsection.12.7}%
+\contentsline {section}{\numberline {13}Conclusion}{6}{section.13}%
+\contentsline {section}{\numberline {14}CSV File Formats}{6}{section.14}%
+\contentsline {subsection}{\numberline {14.1}User File (\texttt {user.csv})}{6}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Book/Thesis/Magazine Files}{6}{subsection.14.2}%
+\contentsline {section}{\numberline {15}Sample Menu Output}{6}{section.15}%
+\contentsline {section}{\numberline {16}Limitations and Future Work}{7}{section.16}%
+\contentsline {section}{\numberline {17}Developer Guide: Modifying the Code and CSV Structure}{7}{section.17}%
+\contentsline {subsection}{\numberline {17.1}Modifying Header Files or \texttt {main.cpp}}{7}{subsection.17.1}%
+\contentsline {subsection}{\numberline {17.2}Adding or Modifying Text in CSV Files}{7}{subsection.17.2}%
+\contentsline {subsection}{\numberline {17.3}Best Practices}{8}{subsection.17.3}%

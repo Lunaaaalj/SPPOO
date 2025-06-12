@@ -33,7 +33,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <stdexcept> // For std::runtime_error
+#include <stdexcept>
 
 class BiblioFiles {
     protected:
@@ -52,7 +52,7 @@ class BiblioFiles {
     }
     virtual ~BiblioFiles() {
         std::cout << "BiblioFiles object with ID " << idfile << " is being destroyed." << std::endl;
-    } // Virtual destructor for proper cleanup of derived classes
+    }
     void borrow() {
         if (!availability) {
             std::cout << "The file is currently unavailable." << std::endl;
@@ -106,21 +106,18 @@ class BiblioFiles {
 
 class User {
     protected:
-    std::string history;        // String to store history of borrowed files
-    std::string name, password; // User credentials
-    std::string borrowedfiles;  // String to store currently borrowed files
+    std::string history;
+    std::string name, password;
+    std::string borrowedfiles;
     public:
     User(std::string userName, std::string userPassword, std::string borrowedFiles, std::string userHistory) 
-        : name(userName), password(userPassword) {}
+        : name(userName), password(userPassword), borrowedfiles(borrowedFiles), history(userHistory) {}
     
     void borrowfile(BiblioFiles* file) {
-        // Add to borrowed files list
         if (!borrowedfiles.empty()) {
-            borrowedfiles += ";";  // Use semicolon as separator
+            borrowedfiles += ";";
         }
         borrowedfiles += file->getidfile();
-        
-        // Add to history
         if (!history.empty()) {
             history += ";";
         }
@@ -131,15 +128,13 @@ class User {
             std::string line;
             std::vector<std::string> lines;
             while (std::getline(userFileIn, line)) {
-                if (line.find(name) == 0) { // Check if the line starts with the username
+                if (line.find(name) == 0) {
                     lines.push_back(name + "," + password + "," + borrowedfiles + "," + history);
                 } else {
                     lines.push_back(line);
                 }
             }
             userFileIn.close();
-            
-            // Rewrite the file with updated data
             std::ofstream userFileOut("user.csv", std::ios::out | std::ios::trunc);
             for (const auto& l : lines) {
                 userFileOut << l << std::endl;
@@ -148,31 +143,45 @@ class User {
         } else {
             std::cerr << "FATAL ERROR: Could not open user.csv file for reading." << std::endl;
         }
-        
         file->borrow();
     }
     
     void returnfile(BiblioFiles* file) {
         std::string fileId = file->getidfile();
         size_t pos = borrowedfiles.find(fileId);
-        
         if (pos != std::string::npos) {
-            // Remove from borrowed files
             if (pos == 0) {
-                // File is at the beginning
                 if (borrowedfiles.length() == fileId.length()) {
-                    borrowedfiles.clear();  // Only file in the list
+                    borrowedfiles.clear();
                 } else {
-                    borrowedfiles = borrowedfiles.substr(fileId.length() + 1);  // Remove file and semicolon
+                    borrowedfiles = borrowedfiles.substr(fileId.length() + 1);
                 }
             } else {
-                // File is in the middle or end
-                borrowedfiles.erase(pos - 1, fileId.length() + 1);  // Remove semicolon and file
+                borrowedfiles.erase(pos - 1, fileId.length() + 1);
             }
-            
             file->returnfile();
         } else {
             std::cout << "The file is not borrowed by this user." << std::endl;
+        }
+        std::ifstream userFileIn("user.csv");
+        if (userFileIn.is_open()) {
+            std::string line;
+            std::vector<std::string> lines;
+            while (std::getline(userFileIn, line)) {
+                if (line.find(name) == 0) {
+                    lines.push_back(name + "," + password + "," + borrowedfiles + "," + history);
+                } else {
+                    lines.push_back(line);
+                }
+            }
+            userFileIn.close();
+            std::ofstream userFileOut("user.csv", std::ios::out | std::ios::trunc);
+            for (const auto& l : lines) {
+                userFileOut << l << std::endl;
+            }
+            userFileOut.close();
+        } else {
+            std::cerr << "FATAL ERROR: Could not open user.csv file for reading." << std::endl;
         }
     }
     
@@ -200,7 +209,6 @@ class User {
         std::cout << "=======================================" << std::endl;
     }
     
-    // Getter methods
     std::string getName() const { return name; }
     bool verifyPassword(const std::string& pass) const { return password == pass; }
     std::string getborrowedfiles() const { return borrowedfiles; }
@@ -209,8 +217,5 @@ class User {
     std::string getUserInfo() const {
         return name + "," + password + "," + borrowedfiles + "," + history;
     }
-
-    
-    // Password management
     void changePassword(const std::string& newPassword) { password = newPassword; }
 };

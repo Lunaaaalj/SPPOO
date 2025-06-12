@@ -14,21 +14,18 @@ std::vector<std::string> parseCSVLine(const std::string& line) {
     std::vector<std::string> result;
     std::string field;
     bool inQuotes = false;
-    
     for (size_t i = 0; i < line.length(); ++i) {
         char c = line[i];
-        
         if (c == '"') {
             inQuotes = !inQuotes;
         } else if (c == ',' && !inQuotes) {
             result.push_back(field);
             field.clear();
-        } 
-        else {
+        } else {
             field += c;
         }
     }
-    result.push_back(field); // Add the last field
+    result.push_back(field);
     return result;
 }
 
@@ -38,37 +35,13 @@ void changeusername(User* user,std::string newname) {
         std::string line;
         std::vector<std::string> lines;
         while (std::getline(userFileIn, line)) {
-            if (line.find(user->getName()) == 0) { // Check if the line starts with the username
+            if (line.find(user->getName()) == 0) {
                 lines.push_back(newname + "," + user->getPassword() + "," + user->getborrowedfiles() + "," + user->gethistory());
             } else {
                 lines.push_back(line);
             }
         }
         userFileIn.close();
-        
-        // Rewrite the file with updated data
-        std::ofstream userFileOut("user.csv", std::ios::out | std::ios::trunc);
-        for (const auto& l : lines) {
-            userFileOut << l << std::endl;
-        }
-        userFileOut.close();
-    } else {
-        std::cerr << "FATAL ERROR: Could not open user.csv file for reading." << std::endl;
-    }
-}
-void deleteuser(User* user) {
-    std::ifstream userFileIn("user.csv");
-    if (userFileIn.is_open()) {
-        std::string line;
-        std::vector<std::string> lines;
-        while (std::getline(userFileIn, line)) {
-            if (line.find(user->getName()) != 0) { // Skip the line with the username
-                lines.push_back(line);
-            }
-        }
-        userFileIn.close();
-        
-        // Rewrite the file without the deleted user
         std::ofstream userFileOut("user.csv", std::ios::out | std::ios::trunc);
         for (const auto& l : lines) {
             userFileOut << l << std::endl;
@@ -79,6 +52,26 @@ void deleteuser(User* user) {
     }
 }
 
+void deleteuser(User* user) {
+    std::ifstream userFileIn("user.csv");
+    if (userFileIn.is_open()) {
+        std::string line;
+        std::vector<std::string> lines;
+        while (std::getline(userFileIn, line)) {
+            if (line.find(user->getName()) != 0) {
+                lines.push_back(line);
+            }
+        }
+        userFileIn.close();
+        std::ofstream userFileOut("user.csv", std::ios::out | std::ios::trunc);
+        for (const auto& l : lines) {
+            userFileOut << l << std::endl;
+        }
+        userFileOut.close();
+    } else {
+        std::cerr << "FATAL ERROR: Could not open user.csv file for reading." << std::endl;
+    }
+}
 
 void showmenu_1() {
     std::cout << "Library data loaded successfully!" << std::endl;
@@ -90,6 +83,7 @@ void showmenu_1() {
     std::cout << "| [B] Borrow a file                           |" << std::endl;
     std::cout << "| [R] Return a file                           |" << std::endl;
     std::cout << "| [S] Show user history                       |" << std::endl;
+    std::cout << "| [F] Show user borrowed files                |" << std::endl;
     std::cout << "| [U] User settings                           |" << std::endl;
     std::cout << "| [E] Exit                                    |" << std::endl;
     std::cout << "+--------------------------------------------+" << std::endl;
@@ -204,19 +198,18 @@ int main() {
         std::getline(userFile, line); // Skip header line
         while (std::getline(userFile, line)) {
             std::vector<std::string> fields = parseCSVLine(line);
-            
             if (fields.size() >= 4) {
                 User* user = new User(fields[0], fields[1], fields[2], fields[3]);
                 users.push_back(user);
             } else {
                 std::cerr << "FATAL ERROR: Invalid user data in line: " << line << std::endl;
                 userFile.close();
-                return 2; // Exit on invalid user data format
+                return 2;
             }
         }
     } else {
         std::cerr << "FATAL ERROR: Could not open user.csv file." << std::endl;
-        return 1; // Exit if user data cannot be loaded
+        return 1;
     }
     // I love spagetti code, don't you?
     userFile.close();
@@ -245,7 +238,7 @@ int main() {
                     std::cout << "Enter password: ";
                     std::getline(std::cin, password);
                     if (users[i]->verifyPassword(password)) {
-                        User* currentUser = users[i]; // Store the logged-in user
+                        User* currentUser = users[i];
                         std::cout << "Login successful!" << std::endl;
                         std::cout << "Loading library data..." << std::endl;
 
@@ -253,10 +246,9 @@ int main() {
                         std::ifstream file("books.csv");
                         if (file.is_open()) {
                             std::string line;
-                            std::getline(file, line); // Skip header line
+                            std::getline(file, line);
                             while (std::getline(file, line)) {
                                 std::vector<std::string> fields = parseCSVLine(line);
-                                
                                 if (fields.size() >= 10) {
                                     try {
                                         Book* book = new Book(fields[0], fields[1], fields[2], std::stoi(fields[3]), 
@@ -283,7 +275,7 @@ int main() {
                         std::ifstream file2("thesis.csv");
                         if (file2.is_open()) {
                             std::string line;
-                            std::getline(file2, line); // Skip header line
+                            std::getline(file2, line);
                             while (std::getline(file2, line)) {
                                 std::vector<std::string> fields = parseCSVLine(line);
                                 if (fields.size() >= 11) {
@@ -791,9 +783,24 @@ int main() {
                                             std::cout << "Username already exists! Please choose a different username." << std::endl;
                                         }
                                     }
+                                } else if (userResponse == "D") {
+                                    std::cout << "Are you sure you want to delete your account? [Y/N]: ";
+                                    std::string confirmDelete;
+                                    std::getline(std::cin, confirmDelete);
+                                    if (confirmDelete == "Y" || confirmDelete == "y") {
+                                        deleteuser(currentUser);
+                                        std::cout << "Account deleted successfully. Exiting program." << std::endl;
+                                        return 0; // Exit the program after deletion
+                                    } else {
+                                        std::cout << "Account deletion cancelled." << std::endl;
+                                    }
                                 }
 
-                            } else {
+                            }  else if (mainResponse == "F") {
+                                // show borrowed files
+                                currentUser->showborrowedfiles();
+                            }
+                            else {
                                 std::cout << "Invalid option! Please try again." << std::endl;
                             }
                         }
@@ -814,7 +821,7 @@ int main() {
             std::string username, password;
             std::cout << "Enter new username: ";
             std::getline(std::cin, username);
-            for (size_t userIdx = 0; userIdx < users.size(); userIdx++) { // Changed from 'i' to 'userIdx'
+            for (size_t userIdx = 0; userIdx < users.size(); userIdx++) {
                 if (users[userIdx]->getName() == username) {
                     std::cout << "Username already exists! Please choose a different username." << std::endl;
                     username.clear();
@@ -833,13 +840,22 @@ int main() {
                 }
                 else {
                     std::cerr << "FATAL ERROR: Could not open user.csv file for writing." << std::endl;
-                    return 12; // Exit if user data cannot be saved
+                    return 12;
                 }
                 userFile.close();
                 std::cout << "Registration successful! You can now log in." << std::endl;
             }
         }
-        exitprogram = false; // Reset exit flag to allow re-entry into the main menu
+        exitprogram = false;
     }
 
+    // Free dynamically allocated memory before exiting
+    for (auto ptr : users) {
+        delete ptr;
+    }
+    for (auto ptr : library) {
+        delete ptr;
+    }
+
+    return 0;
 }
