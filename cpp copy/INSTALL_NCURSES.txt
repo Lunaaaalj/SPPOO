@@ -1,0 +1,2 @@
+# For ncurses
+brew install ncurses

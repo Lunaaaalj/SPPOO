@@ -1,4 +1,4 @@
-#include <iostream>
+#include <ncurses.h>
 #include <vector>
 #include <string>
 #include <fstream>
@@ -48,7 +48,7 @@ void changeusername(User* user,std::string newname) {
         }
         userFileOut.close();
     } else {
-        std::cerr << "FATAL ERROR: Could not open user.csv file for reading." << std::endl;
+        printw("FATAL ERROR: Could not open user.csv file for reading.\n");
     }
 }
 
@@ -69,50 +69,59 @@ void deleteuser(User* user) {
         }
         userFileOut.close();
     } else {
-        std::cerr << "FATAL ERROR: Could not open user.csv file for reading." << std::endl;
+        printw("FATAL ERROR: Could not open user.csv file for reading.\n");
     }
 }
 
-void showmenu_1() {
-    std::cout << "Library data loaded successfully!" << std::endl;
-    std::cout << "+--------------------------------------------+" << std::endl;
-    std::cout << "| Welcome to Luna's Library System!          |" << std::endl;
-    std::cout << "+--------------------------------------------+" << std::endl;
-    std::cout << "| [V] View all files in the library           |" << std::endl;
-    std::cout << "| [L] Search for a file (ID/author/title)     |" << std::endl;
-    std::cout << "| [B] Borrow a file                           |" << std::endl;
-    std::cout << "| [R] Return a file                           |" << std::endl;
-    std::cout << "| [S] Show user history                       |" << std::endl;
-    std::cout << "| [F] Show user borrowed files                |" << std::endl;
-    std::cout << "| [U] User settings                           |" << std::endl;
-    std::cout << "| [E] Exit                                    |" << std::endl;
-    std::cout << "+--------------------------------------------+" << std::endl;
-    std::cout << ": ";
+void showmenu_1(WINDOW* win, int width) {
+    wclear(win);
+    int y = 1;
+    mvwprintw(win, y++, 2, "Library data loaded successfully!");
+    mvwprintw(win, y++, 2, "+--------------------------------------------+");
+    mvwprintw(win, y++, 2, "| Welcome to Luna's Library System!          |");
+    mvwprintw(win, y++, 2, "+--------------------------------------------+");
+    mvwprintw(win, y++, 2, "| [V] View all files in the library           |");
+    mvwprintw(win, y++, 2, "| [L] Search for a file (ID/author/title)     |");
+    mvwprintw(win, y++, 2, "| [B] Borrow a file                           |");
+    mvwprintw(win, y++, 2, "| [R] Return a file                           |");
+    mvwprintw(win, y++, 2, "| [S] Show user history                       |");
+    mvwprintw(win, y++, 2, "| [F] Show user borrowed files                |");
+    mvwprintw(win, y++, 2, "| [U] User settings                           |");
+    mvwprintw(win, y++, 2, "| [E] Exit                                    |");
+    mvwprintw(win, y++, 2, "+--------------------------------------------+");
+    mvwprintw(win, y++, 2, ": ");
+    wrefresh(win);
 }
 
-void showmenu_V() {
-    std::cout << "+--------------------------------------------+" << std::endl;
-    std::cout << "| View all files in the library              |" << std::endl;
-    std::cout << "+--------------------------------------------+" << std::endl;
-    std::cout << "| [B] Books                                   |" << std::endl;
-    std::cout << "| [T] Thesis                                  |" << std::endl;
-    std::cout << "| [M] Magazines                               |" << std::endl;
-    std::cout << "| [A] All files                               |" << std::endl;
-    std::cout << "| [R] Return to main menu                     |" << std::endl;
-    std::cout << "+--------------------------------------------+" << std::endl;
-    std::cout << ": ";
+void showmenu_V(WINDOW* win) {
+    wclear(win);
+    int y = 1;
+    mvwprintw(win, y++, 2, "+--------------------------------------------+");
+    mvwprintw(win, y++, 2, "| View all files in the library              |");
+    mvwprintw(win, y++, 2, "+--------------------------------------------+");
+    mvwprintw(win, y++, 2, "| [B] Books                                   |");
+    mvwprintw(win, y++, 2, "| [T] Thesis                                  |");
+    mvwprintw(win, y++, 2, "| [M] Magazines                               |");
+    mvwprintw(win, y++, 2, "| [A] All files                               |");
+    mvwprintw(win, y++, 2, "| [R] Return to main menu                     |");
+    mvwprintw(win, y++, 2, "+--------------------------------------------+");
+    mvwprintw(win, y++, 2, ": ");
+    wrefresh(win);
 }
 
-void showmenu_L() {
-    std::cout << "+--------------------------------------------+" << std::endl;
-    std::cout << "| Search for a file (ID/author/title)        |" << std::endl;
-    std::cout << "+--------------------------------------------+" << std::endl;
-    std::cout << "| [I] Search by ID                            |" << std::endl;
-    std::cout << "| [A] Search by author                        |" << std::endl;
-    std::cout << "| [T] search by title                         |" << std::endl;
-    std::cout << "| [R] Return to main menu                     |" << std::endl;
-    std::cout << "+--------------------------------------------+" << std::endl;
-    std::cout << ": ";
+void showmenu_L(WINDOW* win) {
+    wclear(win);
+    int y = 1;
+    mvwprintw(win, y++, 2, "+--------------------------------------------+");
+    mvwprintw(win, y++, 2, "| Search for a file (ID/author/title)        |");
+    mvwprintw(win, y++, 2, "+--------------------------------------------+");
+    mvwprintw(win, y++, 2, "| [I] Search by ID                            |");
+    mvwprintw(win, y++, 2, "| [A] Search by author                        |");
+    mvwprintw(win, y++, 2, "| [T] search by title                         |");
+    mvwprintw(win, y++, 2, "| [R] Return to main menu                     |");
+    mvwprintw(win, y++, 2, "+--------------------------------------------+");
+    mvwprintw(win, y++, 2, ": ");
+    wrefresh(win);
 }
 
 void showmenu_B() {
@@ -188,9 +197,21 @@ void showfilemenu() {
 }
 
 int main() {
+    initscr();
+    cbreak();
+    noecho();
+    int term_height, term_width;
+    getmaxyx(stdscr, term_height, term_width);
+    int win_height = 16, win_width = 48;
+    int starty = (term_height - win_height) / 2;
+    int startx = (term_width - win_width) / 2;
+    WINDOW* mainwin = newwin(win_height, win_width, starty, startx);
+    box(mainwin, 0, 0);
+    wrefresh(mainwin);
     std::vector<BiblioFiles*> library;
     std::vector<User*> users;
-    std::cout << "Loading User data..." << std::endl;
+    mvwprintw(mainwin, 1, 2, "Loading User data...");
+    wrefresh(mainwin);
 
     std::ifstream userFile("user.csv");
     if (userFile.is_open()) {
@@ -202,26 +223,33 @@ int main() {
                 User* user = new User(fields[0], fields[1], fields[2], fields[3]);
                 users.push_back(user);
             } else {
-                std::cerr << "FATAL ERROR: Invalid user data in line: " << line << std::endl;
-                userFile.close();
-                return 2;
+            printw("FATAL ERROR: Invalid user data in line: %s\n", line.c_str());
+            userFile.close();
+            endwin();
+            return 2;
             }
         }
     } else {
-        std::cerr << "FATAL ERROR: Could not open user.csv file." << std::endl;
+        printw("FATAL ERROR: Could not open user.csv file.\n");
+        endwin();
         return 1;
     }
     // I love spagetti code, don't you?
     userFile.close();
-    std::cout << "User data loaded successfully!" << std::endl;
+    mvwprintw(mainwin, 2, 2, "User data loaded successfully!");
+    wrefresh(mainwin);
 
     std::string response;
     bool exitprogram = false;
     while (!exitprogram) {
-        showmenu();
-        std::getline(std::cin, response);
+        showmenu_1(mainwin, win_width);
+        char response_buf[100];
+        mvwgetnstr(mainwin, 14, 4, response_buf, 99);
+        response = response_buf;
         if (response == "E") {
-            std::cout << "Exiting the program. Goodbye!" << std::endl;
+            wclear(mainwin);
+            mvwprintw(mainwin, 2, 2, "Exiting the program. Goodbye!");
+            wrefresh(mainwin);
             exitprogram = true;
             break;
         }
@@ -229,18 +257,25 @@ int main() {
         if (response == "L") {
             showloginmenu();
             std::string username, password;
-            std::cout << "Enter username: ";
-            std::getline(std::cin, username);
+            printw("Enter username: ");
+            refresh();
+            char username_buf[100];
+            getnstr(username_buf, 99);
+            username = username_buf;
             bool userFound = false;
             for (size_t i = 0; i < users.size(); i++) {
                 if (users[i]->getName() == username) {
                     userFound = true;
-                    std::cout << "Enter password: ";
-                    std::getline(std::cin, password);
+                    printw("Enter password: ");
+                    refresh();
+                    char password_buf[100];
+                    getnstr(password_buf, 99);
+                    password = password_buf;
                     if (users[i]->verifyPassword(password)) {
                         User* currentUser = users[i];
-                        std::cout << "Login successful!" << std::endl;
-                        std::cout << "Loading library data..." << std::endl;
+                        printw("Login successful!\n");
+                        printw("Loading library data...\n");
+                        refresh();
 
                         // Books processing
                         std::ifstream file("books.csv");
@@ -255,19 +290,22 @@ int main() {
                                                             fields[4], fields[5], fields[6], fields[7], fields[8], std::stoi(fields[9]));
                                         library.push_back(book);
                                     } catch (const std::exception& e) {
-                                        std::cerr << "FATAL ERROR: Invalid book data format - " << e.what() << std::endl;
+                                        printw("FATAL ERROR: Invalid book data format - %s\n", e.what());
                                         file.close();
+                                        endwin();
                                         return 3;
                                     }
                                 } else {
-                                    std::cerr << "FATAL ERROR: Invalid book data format in line: " << line << std::endl;
+                                    printw("FATAL ERROR: Invalid book data format in line: %s\n", line.c_str());
                                     file.close();
+                                    endwin();
                                     return 4;
                                 }
                             }
                             file.close();
                         } else {
-                            std::cerr << "FATAL ERROR: Could not open books.csv file." << std::endl;
+                            printw("FATAL ERROR: Could not open books.csv file.\n");
+                            endwin();
                             return 5;
                         }
 
@@ -284,19 +322,22 @@ int main() {
                                                                   fields[4], fields[5], fields[6], fields[7], fields[8], fields[9], fields[10]);
                                         library.push_back(thesis);
                                     } catch (const std::exception& e) {
-                                        std::cerr << "FATAL ERROR: Invalid thesis data format - " << e.what() << std::endl;
+                                        printw("FATAL ERROR: Invalid thesis data format - %s\n", e.what());
                                         file2.close();
+                                        endwin();
                                         return 6;
                                     }
                                 } else {
-                                    std::cerr << "FATAL ERROR: Invalid thesis data format in line: " << line << std::endl;
+                                    printw("FATAL ERROR: Invalid thesis data format in line: %s\n", line.c_str());
                                     file2.close();
+                                    endwin();
                                     return 7;
                                 }
                             }
                             file2.close();
                         } else {
-                            std::cerr << "FATAL ERROR: Could not open thesis.csv file." << std::endl;
+                            printw("FATAL ERROR: Could not open thesis.csv file.\n");
+                            endwin();
                             return 8;
                         }
 
@@ -314,23 +355,27 @@ int main() {
                                                                         fields[8], fields[9], fields[10]);
                                         library.push_back(magazine);
                                     } catch (const std::exception& e) {
-                                        std::cerr << "FATAL ERROR: Invalid magazine data format - " << e.what() << std::endl;
+                                        printw("FATAL ERROR: Invalid magazine data format - %s\n", e.what());
                                         file3.close();
+                                        endwin();
                                         return 9;
                                     }
                                 } else {
-                                    std::cerr << "FATAL ERROR: Invalid magazine data format in line: " << line << std::endl;
+                                    printw("FATAL ERROR: Invalid magazine data format in line: %s\n", line.c_str());
                                     file3.close();
+                                    endwin();
                                     return 10;
                                 }
                             }
                             file3.close();
                         } else {
-                            std::cerr << "FATAL ERROR: Could not open mags.csv file." << std::endl;
+                            printw("FATAL ERROR: Could not open mags.csv file.\n");
+                            endwin();
                             return 11;
                         }
 
-                        std::cout << "All library data loaded successfully!" << std::endl;
+                        printw("All library data loaded successfully!\n");
+                        refresh();
 
                         // main application loop after successful login
                         std::string mainResponse;
@@ -340,7 +385,7 @@ int main() {
                         bool loggedIn = true;
 
                         while (loggedIn) {
-                            showmenu_1();
+                            showmenu_1(mainwin, win_width);
                             std::getline(std::cin, mainResponse);
 
                             if (mainResponse == "E") {
@@ -348,7 +393,7 @@ int main() {
                             } else if (mainResponse == "V") {
                                 // Handle view menu
                                 while (true) {
-                                    showmenu_V();
+                                    showmenu_V(mainwin);
                                     std::getline(std::cin, secondResp);
                                     if (secondResp == "E") {
                                         break;
@@ -593,7 +638,7 @@ int main() {
                             } else if (mainResponse == "L") {
                                 // Handle search menu
                                 while (true) {
-                                    showmenu_L();
+                                    showmenu_L(mainwin);
                                     std::getline(std::cin, secondResp);
                                     if (secondResp == "R") {
                                         break;
@@ -856,6 +901,7 @@ int main() {
     for (auto ptr : library) {
         delete ptr;
     }
-
+    delwin(mainwin);
+    endwin();
     return 0;
 }

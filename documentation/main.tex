@@ -5,13 +5,14 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{geometry}
 \geometry{margin=1in}
+\usepackage{graphicx}
 \usepackage[style=acmnumeric,backend=biber]{biblatex}
 \addbibresource{references.bib}
 
 \title{Luna's Library System \\
 \vspace{0.5em}
 \large Documentation and Code Overview}
-\author{Your Name}
+\author{Angel E Luna}
 \date{\today}
 
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -47,7 +48,23 @@
 \tableofcontents
 
 \section{Introduction}
-Luna's Library System is a C++ console application designed to manage a digital library. It allows users to register, log in, borrow and return books, theses, and magazines, and view their borrowing history. The system uses CSV files for persistent storage of users and library items.
+
+Luna's Library System is a console-based application developed in C++ that simulates the core functionalities of a digital library. The system allows users to register, log in, borrow and return various types of library items such as books, theses, and magazines, and to view their borrowing history. All user and library data are stored persistently using CSV files, ensuring that information is retained between sessions.
+
+The project was designed to provide a practical demonstration of object-oriented programming principles, file handling, and menu-driven user interfaces in C++. By tackling common challenges found in real-world library management—such as user authentication, data consistency, and resource tracking—this system serves as both a learning tool and a foundation for further development. The modular structure of the code makes it easy to extend with new features or adapt to different requirements.
+
+This documentation provides a comprehensive overview of the system's design, functionality, and usage, along with guidelines for future development and extension.
+
+\section{Project Motivation and Rationale}
+
+The decision to develop Luna's Library System was driven by several key factors:
+
+\begin{itemize}
+    \item \textbf{Practical Application of C++ Concepts:} This project provides a comprehensive exercise in object-oriented programming, file I/O, and data structures, all of which are fundamental to mastering C++. By implementing a real-world system, the project bridges the gap between theoretical knowledge and practical skills.
+    \item \textbf{Relevance to Everyday Needs:} Library management is a classic problem that remains relevant in both educational and professional contexts. Designing a digital library system simulates challenges faced in real information systems, such as user authentication, data persistence, and resource management.
+    \item \textbf{Scalability and Extensibility:} The project was chosen for its potential to be extended with new features, such as additional file types, advanced search, or even a graphical interface. This makes it an ideal foundation for future learning or collaborative development.
+    \item \textbf{Personal Interest and Challenge:} Building a library system is both intellectually stimulating and rewarding. It requires careful planning, attention to detail, and creative problem-solving, making it an ideal project for honing software development skills.
+\end{itemize}
 
 \section{Project Structure}
 \begin{itemize}
@@ -144,132 +161,123 @@ void User::borrowfile(BiblioFiles* file) {
 \end{itemize}
 
 \section{Data Consistency}
-The system reads the entire CSV file into memory, updates the relevant records, and rewrites the file. This approach ensures that changes are atomic from the user's perspective, but may not be safe for concurrent access by multiple users or processes. For multi-user environments, consider using a database or file-locking mechanisms.
+The system reads the entire CSV file into memory on startup and writes back any changes immediately. This ensures that all user and library data is consistent and up-to-date.
 
-\section{Extending the Program}
-To add new features (e.g., new file types or user roles), create new classes inheriting from \texttt{BiblioFiles} or \texttt{User}, and update the menu logic in \texttt{main.cpp}.
+\section{Object-Oriented Programming Concepts Used}
 
-\section{Menu Navigation and User Experience}
-The program uses a text-based menu system. After launching, users are presented with options to log in, register, or exit. Once logged in, users can navigate through nested menus to view, borrow, or return files, and access their history or settings. Each menu validates input and provides feedback for invalid choices, ensuring a robust and user-friendly experience.
+\subsection{Inheritance}
+Inheritance allows a class to use the properties and methods of another class. This promotes code reuse and logical hierarchy. A child class inherits from a parent class and can also add its own functionality.
 
-\section{User Manual}
-
-\subsection{Starting the Program}
-To start Luna's Library System, compile and run the C++ program. The main menu will appear in your terminal.
-
-\subsection{Main Menu Options}
+\subsection{Access Modifiers}
+Access modifiers control the visibility of class members:
 \begin{itemize}
-    \item \textbf{[L] Login}: Enter your username and password to access your account.
-    \item \textbf{[R] Register}: Create a new user account by providing a unique username and password.
-    \item \textbf{[E] Exit}: Close the program.
+    \item \textbf{public}: Accessible from anywhere.
+    \item \textbf{private}: Accessible only within the same class.
+    \item \textbf{protected}: Accessible within the class and its subclasses.
+\end{itemize}
+They help with encapsulation and data protection.
+
+\subsection{Method Overloading and Overriding}
+\textbf{Overloading:} When a class has multiple methods with the same name but different parameter lists. This is resolved at compile time.
+
+\textbf{Overriding:} When a subclass redefines a method from its parent class to provide specific behavior. This is resolved at runtime, usually using \texttt{virtual} in languages like C++.
+
+\subsection{Polymorphism}
+Polymorphism allows the same interface to be used for different data types or behaviors. It enables flexibility and code reuse. There are two main types:
+\begin{itemize}
+    \item \textbf{Compile-time polymorphism} (e.g., method overloading)
+    \item \textbf{Runtime polymorphism} (e.g., method overriding using base class pointers or references)
 \end{itemize}
 
-\subsection{After Login: User Menu}
-Once logged in, you will see a menu with options such as:
-\begin{itemize}
-    \item \textbf{[V] View Files}: Browse books, theses, or magazines. Select an item to see details or perform actions.
-    \item \textbf{[L] Search}: Search for files by title, author, or other criteria (if implemented).
-    \item \textbf{[B] Borrow}: Borrow a file by entering its ID.
-    \item \textbf{[R] Return}: Return a borrowed file by entering its ID.
-    \item \textbf{[S] History}: View your borrowing history.
-    \item \textbf{[U] User Settings}: Change your username or delete your account.
-    \item \textbf{[E] Exit}: Log out and return to the main menu.
-\end{itemize}
+\subsection{Abstract Classes}
+An abstract class cannot be instantiated on its own. It often contains one or more pure virtual functions, which means any subclass must implement those functions. It serves as a blueprint for other classes.
 
-\subsection{Borrowing and Returning Files}
-\begin{itemize}
-    \item To borrow a file, navigate to the desired item and select the borrow option. The file will be added to your borrowed list and history.
-    \item To return a file, select the return option and specify the file ID.
-\end{itemize}
+\subsection{Operator Overloading}
+Operator overloading lets you redefine the behavior of standard operators (like \texttt{+}, \texttt{-}, \texttt{==}) when they are used with objects of your own classes. This makes your custom types easier to use and understand.
 
-\subsection{User Settings}
-In the user settings menu, you can:
+\section{Future Work and Enhancements}
+Potential future enhancements include:
 \begin{itemize}
-    \item Change your username.
-    \item Delete your account (this action cannot be undone).
-    \item Return to the main menu.
+    \item Adding more file types (e.g., audiobooks, videos)
+    \item Implementing advanced search and filtering options
+    \item Developing a graphical user interface (GUI)
+    \item Adding networked multi-user support
+    \item Implementing a web-based interface
 \end{itemize}
-
-\subsection{Input Guidelines}
-\begin{itemize}
-    \item Enter the letter corresponding to your menu choice (e.g., \texttt{L} for Login).
-    \item When prompted for IDs or text, type the required information and press Enter.
-    \item If you enter an invalid option, the program will prompt you to try again.
-\end{itemize}
-
-\subsection{Exiting the Program}
-You can exit the program at any time by selecting the \texttt{E} option in the current menu.
 
 \section{Conclusion}
-This system demonstrates a modular approach to C++ application design, using classes, file I/O, and menu-driven user interaction. For further improvements, consider adding unit tests, using a database for storage, or implementing a graphical interface.
+Luna's Library System is a robust and flexible foundation for understanding and developing library management systems. It covers essential programming concepts and provides a platform for future enhancements and learning.
 
-\section{CSV File Formats}
-\subsection{User File (\texttt{user.csv})}
-Each line represents a user:
-\begin{verbatim}
-username,password,borrowedfiles,history
-\end{verbatim}
+\section{Program Execution Examples}
 
-\subsection{Book/Thesis/Magazine Files}
-Each line represents a library item, with fields such as ID, title, author, year, and type-specific attributes. For example:
-\begin{verbatim}
-B001,The C++ Programming Language,Bjarne Stroustrup,2013,book,...
-\end{verbatim}
+This section provides screenshots and sample outputs to illustrate how Luna's Library System appears during execution.
 
-\section{Sample Menu Output}
-\begin{verbatim}
-+--------------------------------------------+
-| Luna's Library System                      |
-+--------------------------------------------+
-| [L] Login                                 |
-| [R] Register                              |
-| [E] Exit                                  |
-+--------------------------------------------+
-: 
-\end{verbatim}
+\subsection{Startup and Main Menu}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2025-06-12 at 20.52.09.png}
+    \caption{Screenshot 2025-06-12 at 20.52.09.png --- Main menu displayed at program startup.}
+\end{figure}
 
-\section{Limitations and Future Work}
-\begin{itemize}
-    \item The system does not support concurrent users.
-    \item Passwords are stored in plain text for simplicity.
-    \item No advanced search or filtering features.
-    \item Future improvements could include password hashing, a graphical interface, or migration to a database backend.
-\end{itemize}
+\subsection{User Registration}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2025-06-12 at 20.52.34.png}
+    \caption{Screenshot 2025-06-12 at 20.52.34.png --- User registration process.}
+\end{figure}
 
+\subsection{Login}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2025-06-12 at 20.53.00.png}
+    \caption{Screenshot 2025-06-12 at 20.53.00.png --- User login prompt.}
+\end{figure}
 
+\subsection{Viewing Library Files}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2025-06-12 at 20.53.23.png}
+    \caption{Screenshot 2025-06-12 at 20.53.23.png --- Viewing all files in the library.}
+\end{figure}
 
-\section{Developer Guide: Modifying the Code and CSV Structure}
+\subsection{Borrowing a File}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2025-06-12 at 20.53.52.png}
+    \caption{Screenshot 2025-06-12 at 20.53.52.png --- Borrowing a file from the library.}
+\end{figure}
 
-\subsection{Modifying Header Files or \texttt{main.cpp}}
-If you wish to extend or change the functionality of Luna's Library System, you will likely need to modify the header files (such as \texttt{bibliofiles.hpp}) or the main program file (\texttt{main.cpp}). Here are some tips:
+\subsection{Returning a File}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2025-06-12 at 20.54.10.png}
+    \caption{Screenshot 2025-06-12 at 20.54.10.png --- Returning a borrowed file.}
+\end{figure}
 
-\begin{itemize}
-    \item \textbf{Adding a New File Type:} \\
-    Create a new class (e.g., \texttt{class Newspaper}) that inherits from \texttt{BiblioFiles}. Implement any new attributes or methods specific to your file type. Update the logic in \texttt{main.cpp} to recognize and handle this new type, including reading from and writing to a new CSV file if needed.
-    \item \textbf{Changing User or File Attributes:} \\
-    If you add or remove attributes (fields) in the \texttt{User} or \texttt{BiblioFiles} classes, make sure to update all code that reads from or writes to the corresponding CSV files. Adjust the parsing logic (e.g., \texttt{parseCSVLine}) and the code that constructs objects from CSV data.
-    \item \textbf{Updating Menus:} \\
-    If you add new features, update the menu functions (such as \texttt{showmenu()}, \texttt{showfilemenu()}, etc.) to include new options, and handle the new user input in the main application loop.
-\end{itemize}
+\subsection{User History}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2025-06-12 at 20.55.30.png}
+    \caption{Screenshot 2025-06-12 at 20.55.30.png --- Viewing user borrowing history.}
+\end{figure}
 
-\subsection{Adding or Modifying Text in CSV Files}
-\begin{itemize}
-    \item \textbf{Adding a New Column:} \\
-    If you want to add a new field (e.g., "email" for users), update the CSV header and all user records. Then, update the code that reads and writes user data to handle the new field. This includes modifying the constructor and any functions that parse or output user data.
-    \item \textbf{Changing the CSV Format:} \\
-    Always keep the order of fields consistent between the code and the CSV files. If you change the order or add/remove fields, update both the CSV files and the code that reads/writes them.
-    \item \textbf{Adding New Records Manually:} \\
-    You can add new users or files directly in the CSV files using a text editor. Make sure each field is separated by a comma, and that the number and order of fields matches what the program expects.
-    \item \textbf{Handling Special Characters:} \\
-    Avoid using commas within fields, as this may break the CSV parsing logic. If you need to store text with commas, consider updating the parsing logic to handle quoted fields.
-\end{itemize}
+\subsection{User Settings}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2025-06-12 at 20.55.55.png}
+    \caption{Screenshot 2025-06-12 at 20.55.55.png --- User settings menu.}
+\end{figure}
 
-\subsection{Best Practices}
-\begin{itemize}
-    \item Always back up your CSV files before making bulk changes.
-    \item Test your changes with a few records before applying them to the entire dataset.
-    \item If you add new features, update the documentation and user manual accordingly.
-\end{itemize}
+\subsection{Exiting the Program}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2025-06-12 at 20.56.20.png}
+    \caption{Screenshot 2025-06-12 at 20.56.20.png --- Exiting the program.}
+\end{figure}
+
+% Add more figures as needed for other features
+
+\clearpage
 
 \nocite{*}
 \printbibliography

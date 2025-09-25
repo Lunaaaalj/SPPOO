@@ -98,6 +98,15 @@ INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/geometry/geometry.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/geometry/geometry.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/generic/iftex/ifvtex.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/generic/iftex/ifvtex.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphicx.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphicx.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphics.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphics.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/graphics/trig.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/graphics/trig.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/biblatex/biblatex.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/biblatex/biblatex.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/logreq/logreq.sty
@@ -159,6 +168,11 @@ OUTPUT main.aux
 INPUT /usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT ./main.out
 INPUT ./main.out
 INPUT main.out
@@ -203,9 +217,10 @@ INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm
 INPUT /usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmtt12.tfm
 OUTPUT main.toc
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm
+INPUT /usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
+INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmtt12.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -217,8 +232,51 @@ INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstmisc.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstmisc.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstmisc.sty
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmtt12.tfm
+INPUT ./Screenshot 2025-06-12 at 20.52.09.png
+INPUT ./Screenshot 2025-06-12 at 20.52.09.png
+INPUT ./Screenshot 2025-06-12 at 20.52.09.png
+INPUT ./Screenshot 2025-06-12 at 20.52.09.png
+INPUT ./Screenshot 2025-06-12 at 20.52.09.png
+INPUT ./Screenshot 2025-06-12 at 20.52.34.png
+INPUT ./Screenshot 2025-06-12 at 20.52.34.png
+INPUT ./Screenshot 2025-06-12 at 20.52.34.png
+INPUT ./Screenshot 2025-06-12 at 20.52.34.png
+INPUT ./Screenshot 2025-06-12 at 20.52.34.png
+INPUT ./Screenshot 2025-06-12 at 20.53.00.png
+INPUT ./Screenshot 2025-06-12 at 20.53.00.png
+INPUT ./Screenshot 2025-06-12 at 20.53.00.png
+INPUT ./Screenshot 2025-06-12 at 20.53.00.png
+INPUT ./Screenshot 2025-06-12 at 20.53.00.png
+INPUT ./Screenshot 2025-06-12 at 20.53.23.png
+INPUT ./Screenshot 2025-06-12 at 20.53.23.png
+INPUT ./Screenshot 2025-06-12 at 20.53.23.png
+INPUT ./Screenshot 2025-06-12 at 20.53.23.png
+INPUT ./Screenshot 2025-06-12 at 20.53.23.png
+INPUT ./Screenshot 2025-06-12 at 20.53.52.png
+INPUT ./Screenshot 2025-06-12 at 20.53.52.png
+INPUT ./Screenshot 2025-06-12 at 20.53.52.png
+INPUT ./Screenshot 2025-06-12 at 20.53.52.png
+INPUT ./Screenshot 2025-06-12 at 20.53.52.png
+INPUT ./Screenshot 2025-06-12 at 20.54.10.png
+INPUT ./Screenshot 2025-06-12 at 20.54.10.png
+INPUT ./Screenshot 2025-06-12 at 20.54.10.png
+INPUT ./Screenshot 2025-06-12 at 20.54.10.png
+INPUT ./Screenshot 2025-06-12 at 20.54.10.png
+INPUT ./Screenshot 2025-06-12 at 20.55.30.png
+INPUT ./Screenshot 2025-06-12 at 20.55.30.png
+INPUT ./Screenshot 2025-06-12 at 20.55.30.png
+INPUT ./Screenshot 2025-06-12 at 20.55.30.png
+INPUT ./Screenshot 2025-06-12 at 20.55.30.png
+INPUT ./Screenshot 2025-06-12 at 20.55.55.png
+INPUT ./Screenshot 2025-06-12 at 20.55.55.png
+INPUT ./Screenshot 2025-06-12 at 20.55.55.png
+INPUT ./Screenshot 2025-06-12 at 20.55.55.png
+INPUT ./Screenshot 2025-06-12 at 20.55.55.png
+INPUT ./Screenshot 2025-06-12 at 20.56.20.png
+INPUT ./Screenshot 2025-06-12 at 20.56.20.png
+INPUT ./Screenshot 2025-06-12 at 20.56.20.png
+INPUT ./Screenshot 2025-06-12 at 20.56.20.png
+INPUT ./Screenshot 2025-06-12 at 20.56.20.png
 INPUT main.aux
 INPUT ./main.out
 INPUT ./main.out
