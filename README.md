@@ -71,7 +71,7 @@ Manages user data and operations:
 ### Prerequisites
 - C++ compiler (g++, clang++)
 - CMake (version 3.10 or higher)
-- ncurses library (optional, for enhanced terminal UI)
+- Google Test (GTest) for running tests
 
 ### Building the Project
 
@@ -84,6 +84,12 @@ make
 ```
 
 ### Running the Application
+
+```bash
+./my_executable
+```
+
+Or if you have a pre-compiled `main` binary in the cpp directory:
 
 ```bash
 ./main
