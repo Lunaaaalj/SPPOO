@@ -56,7 +56,7 @@ The base class for all library items, containing common attributes:
 ### User Class
 Manages user data and operations:
 - User authentication
-- Borrowing and returning files
+- Borrowing and returning library items
 - Borrowing history tracking
 
 ## Technologies Used
@@ -98,7 +98,7 @@ make
 
 2. **Browsing and Borrowing**
    - View available library items
-   - Search for specific files
+   - Search for specific items
    - Borrow items by entering their ID
    - View borrowed items in your history
 
@@ -115,7 +115,7 @@ make
 
 - **Inheritance**: BiblioFiles base class with derived classes (Book, Thesis, Magazine)
 - **Encapsulation**: Protected and private member variables with public methods
-- **Polymorphism**: Base class pointers for different file types
+- **Polymorphism**: Base class pointers for different item types
 - **Abstraction**: Separation of interface and implementation
 
 ## Future Enhancements
