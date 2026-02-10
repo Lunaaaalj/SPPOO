@@ -129,7 +129,7 @@ make
 
 ## Documentation
 
-For detailed documentation including class diagrams, program flow, and implementation details, see the [documentation](./documentation/main.pdf) directory.
+For detailed documentation including class diagrams, program flow, and implementation details, see the [documentation PDF](./documentation/main.pdf).
 
 ## License
 
