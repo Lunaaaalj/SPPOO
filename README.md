@@ -15,8 +15,8 @@ Luna's Library System is designed to demonstrate object-oriented programming pri
 
 - **Library Operations**
   - Browse available library items (books, theses, magazines)
-  - Borrow and return files
-  - View file information and content fragments
+  - Borrow and return library items
+  - View item information and content fragments
   - Track borrowing history
 
 - **Data Persistence**
@@ -104,7 +104,7 @@ make
 
 3. **Returning Items**
    - Select "Return" from the menu
-   - Enter the ID of the borrowed file
+   - Enter the ID of the borrowed item
    - Confirm the return
 
 4. **User History**
